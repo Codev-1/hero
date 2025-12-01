@@ -1,0 +1,1471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Hero Section</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600..900&display=swap" rel="stylesheet">
+
+
+
+
+
+
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+
+<style>
+/* RESET */
+* { margin: 0; padding: 0; box-sizing: border-box; 
+  
+}
+html, body { 
+  width: 100%; height: auto;
+  margin: 0; overflow-x: hidden; font-family: Poppins, sans-serif; scroll-behavior: smooth;
+  
+ }
+
+
+  
+
+
+/* ========================================
+          LOADER FIXED & WORKING
+======================================== */
+.loader-wrapper {
+  position: fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:#ffffff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  z-index:999999;
+  opacity:1;
+  animation: loaderFadeOut 1s ease forwards;
+  animation-delay:3.6s;
+}
+
+@keyframes loaderFadeOut {
+  0% { opacity:1; visibility:visible; }
+  100% { opacity:0; visibility:hidden; }
+}
+
+/* Glow BG */
+@keyframes glowSpin {
+  0% { transform: rotate(0deg) scale(1); }
+  100% { transform: rotate(360deg) scale(1.1); }
+}
+
+/* Logo Drop */
+@keyframes logoDrop {
+  0% { opacity:0; transform:translateY(-30px) scale(0.95); }
+  60% { opacity:1; transform:translateY(10px) scale(1.03); }
+  100% { transform:translateY(0) scale(1); }
+}
+
+/* Bars equalizer */
+@keyframes barWave {
+  0%, 100% { height:20px; opacity:0.6; }
+  50% { height:45px; opacity:1; }
+}
+
+/* Text slide */
+@keyframes textSlide {
+  0% { opacity:0; transform:translateY(20px); }
+  100% { opacity:1; transform:translateY(0); }
+}
+
+/* Cursor blink */
+@keyframes cursorBlink {
+  0%,100% { border-color:transparent; }
+  50% { border-color:#008CDB; }
+}
+
+/* ========================================
+          HERO BASE
+======================================== */
+.hero {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Video */
+.hero-video {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  min-width: 100vw;
+  min-height: 100vh;
+  width: 100vw;
+  height: 100vh;
+  object-fit: cover;
+  transform: none;
+  filter: brightness(0.95) contrast(1.05) saturate(1.1);
+  z-index: 1;
+}
+
+/* Overlay */
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.25));
+  z-index: 2;
+}
+
+/* Energy Wave */
+.energy-wave {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px; height: 900px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(rgba(1, 91, 143, 0.25), transparent 70%);
+  border-radius: 50%;
+  filter: blur(60px);
+  animation: wavePulse 5s infinite ease-in-out;
+  z-index: 1;
+}
+
+@keyframes wavePulse {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.55; }
+  50% { transform: translate(-50%, -50%) scale(1.25); opacity: 0.75; }
+}
+
+/* Logo */
+.hero-logo-fixed {
+  position: fixed;
+  top: 25px; left: 35px;
+  z-index: 30;
+  padding: 6px 12px;
+  border-radius: 14px;
+  background: rgba(0,0,0,0.35);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 0 6px rgba(0,255,255,0.25);
+}
+.hero-logo-fixed img { width: 140px; }
+
+
+/* ========================================
+      HAMBURGER + SIDEMENU
+======================================== */
+.hamburger {
+  position: fixed;
+  top: 28px; right: 35px;
+  width: 48px; height: 38px;
+  cursor: pointer;
+  z-index: 99999;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6px 0;
+}
+
+.hamburger span {
+  height: 6px; width: 100%;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #00eaff, #00ffc8, #009dff, #00eaff);
+  background-size: 300% 300%;
+  animation: gradientMove 3s infinite linear;
+  box-shadow: 0 0 7px cyan, 0 0 15px rgba(0,200,255,0.9);
+  outline: 2px solid rgba(0,50,90,0.45);
+  outline-offset: -2px;
+  transition: 0.35s ease;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
+.hamburger.active span:nth-child(1) {
+  transform: translateY(14px) rotate(45deg);
+}
+.hamburger.active span:nth-child(2) {
+  opacity:0;
+  transform: translateX(-20px);
+}
+.hamburger.active span:nth-child(3) {
+  transform: translateY(-14px) rotate(-45deg);
+}
+
+.hamburger .ripple {
+  position: absolute;
+  top:50%; left:50%;
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: rgba(0,255,255,0.75);
+  opacity: 0;
+  pointer-events:none;
+}
+
+.side-menu {
+  position: fixed;
+  top: 0; right: 0;
+  width: 380px; height: 100vh;
+  background: #02060A;
+  padding: 70px 55px;
+  backdrop-filter: blur(18px);
+  clip-path: circle(0% at 100% 0);
+  transition: clip-path 0.75s cubic-bezier(.58,.01,.18,1);
+  z-index: 200;
+}
+
+.side-menu.active { clip-path: circle(180% at 100% 0); }
+
+.side-menu a {
+  display:block;
+  margin:22px 0;
+  font-size:38px;
+  font-weight:700;
+  color:#29d9ff;
+  text-decoration:none;
+}
+
+/* ========================================
+      HERO TEXT
+======================================== */
+.hero-content {
+  position:relative;
+  z-index:20;
+  text-align:center;
+  opacity:0;
+  animation: fadeUp 1.3s forwards .4s;
+}
+
+.hero-content h1 {
+  font-size:58px;
+  font-weight:800;
+  background: linear-gradient(45deg, #00eaff, #00bfff, #00ffd0);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+.hero-content p {
+  font-size:22px;
+  color:#d7f6ff;
+  margin-top:18px;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(40px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+</style>
+</head>
+
+<body>
+
+<!-- ===========================================
+      MINIMAL CIRCLE-REVEAL BRAND LOADER
+=========================================== -->
+<!-- ============================================================
+       LUXURY CIRCLE-REVEAL LOADER (CENTER LOGO → CIRCLE EXPANDS)
+=============================================================== -->
+<!-- ============================================================
+      CIRCLE → PAGE REVEAL LOADER (FINAL VERSION)
+=============================================================== -->
+<section id="brandLoader">
+
+<style>
+/* ----------------------------------------
+   BASE LOADER (visible at start)
+----------------------------------------- */
+#brandLoader {
+  position: fixed;
+  inset: 0;
+  background: #0b0b0b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  z-index: 999999999;
+  clip-path: circle(150vmax at 50% 50%);  /* START VISIBLE */
+}
+
+/* ----------------------------------------
+   CIRCLE EXPAND (Reveal Page)
+----------------------------------------- */
+@keyframes circleExpand {
+  0%   { clip-path: circle(150vmax at 50% 50%); }
+  100% { clip-path: circle(0% at 50% 50%); } /* CLOSE → REVEAL PAGE */
+}
+
+/* ----------------------------------------
+   FILM GRAIN
+----------------------------------------- */
+.loader-grain {
+  position: absolute;
+  inset: 0;
+  background: url("https://i.imgur.com/8yKX4oJ.png");
+  opacity: .18;
+  mix-blend-mode: soft-light;
+}
+
+/* ----------------------------------------
+   LOGO ANIMATION
+----------------------------------------- */
+.loader-logo {
+  width: 260px;
+  opacity: 0;
+  z-index: 10;
+  animation: logoFade 1.4s ease forwards .4s;
+}
+
+@keyframes logoFade {
+  0%   { opacity: 0; transform: translateY(20px) scale(.9); }
+  75%  { opacity: 1; transform: translateY(0) scale(1.05); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* ----------------------------------------
+   FADE OUT LOADER
+----------------------------------------- */
+@keyframes loaderFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; visibility: hidden; }
+}
+
+#brandLoader.fadeOut {
+  animation: loaderFadeOut .8s ease forwards;
+}
+</style>
+
+<!-- LOADER ELEMENTS -->
+<div class="loader-grain"></div>
+<img src="img/logo.png" class="loader-logo">
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+  const loader = document.getElementById("brandLoader");
+
+  // Step 1 → Circle animation (close → reveal)
+  setTimeout(() => {
+    loader.style.animation = "circleExpand 1.4s cubic-bezier(.23,1,.32,1) forwards";
+  }, 1500);
+
+  // Step 2 → Fade out everything
+  setTimeout(() => {
+    loader.classList.add("fadeOut");
+  }, 3000);
+
+});
+</script>
+
+</section>
+
+
+<!-- ==========================================
+        FOLLOW CURSOR SECTION (FULL BLOCK)
+========================================== -->
+<section id="followCursor">
+
+<style>
+/* Custom Follow Cursor */
+#customCursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999999;
+  background: radial-gradient(circle,
+    rgba(0,255,255,0.9),
+    rgba(0,190,255,0.4),
+    rgba(0,150,255,0.25)
+  );
+  box-shadow:
+    0 0 12px rgba(0,255,255,0.9),
+    0 0 35px rgba(0,255,255,0.5),
+    0 0 55px rgba(0,190,255,0.45);
+  transform: translate(-50%, -50%);
+  mix-blend-mode: screen;
+  transition: width 0.25s ease, height 0.25s ease, opacity 0.25s ease;
+}
+
+/* Grow cursor on interactive items */
+.cursor-hover {
+  width: 65px !important;
+  height: 65px !important;
+  box-shadow:
+    0 0 18px rgba(0,255,255,1),
+    0 0 65px rgba(0,255,255,0.6),
+    0 0 95px rgba(0,255,255,0.55);
+}
+</style>
+
+<!-- Cursor Element -->
+<div id="customCursor"></div>
+
+<script>
+// Move cursor with mouse
+document.addEventListener("mousemove", (e) => {
+  const cursor = document.getElementById("customCursor");
+  cursor.style.left = `${e.clientX}px`;
+  cursor.style.top = `${e.clientY}px`;
+});
+
+
+// Items that trigger cursor enlargement
+const hoverTargets = document.querySelectorAll("a, button, .hamburger, .side-menu");
+
+hoverTargets.forEach((elem) => {
+  elem.addEventListener("mouseenter", () => {
+    document.getElementById("customCursor").classList.add("cursor-hover");
+  });
+  elem.addEventListener("mouseleave", () => {
+    document.getElementById("customCursor").classList.remove("cursor-hover");
+  });
+});
+</script>
+
+</section>
+
+<!-- ===========================
+            HERO
+=========================== -->
+<div class="hero-fixed-video">
+  <video autoplay muted loop playsinline>
+    <source src="img/solar-windfps.mp4" type="video/mp4">
+  </video>
+  <div class="hero-overlay"></div>
+</div>
+
+<section class="hero-content-section">
+  <div class="energy-wave"></div>
+
+  <div class="hero-logo-fixed">
+    <img src="img/logo2.png">
+  </div>
+
+  <div id="hamburgerBtn" class="hamburger" onclick="toggleMenuUpdated()">
+    <span></span><span></span><span></span>
+    <div class="ripple"></div>
+  </div>
+
+  <div id="sideMenu" class="side-menu">
+    <a href="index.html">Home</a>
+    <a href="about.html">About Us</a>
+    <a href="awareness.html">Awareness Campaigns</a>
+    <a href="training.html">Training Campaigns</a>
+    <a href="consultation.html">Consultation</a>
+    <a href="contact.html">Contact Us</a>
+  </div>
+
+  <div class="hero-content">
+    <h1>Powering a Sustainable Tomorrow</h1>
+    <p>We provide innovative renewable energy solutions, awareness programs and training campaigns to shape a greener future.</p>
+  </div>
+</section>
+
+
+<style>
+
+.hero-fixed-video {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+.hero-fixed-video video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.95) contrast(1.05) saturate(1.1);
+}
+.hero-overlay {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: linear-gradient(rgba(0, 0, 0, 0.18), rgba(0, 0, 0, 0.25));
+  z-index: 1;
+}
+
+.hero-content-section {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 20px;
+  text-align: center;
+  background: transparent;
+  backdrop-filter: none;
+}
+
+
+</style>
+
+
+
+
+<!-- ===========================
+           JS
+=========================== -->
+<script>
+/* MENU */
+function toggleMenuUpdated() {
+  const burger = document.getElementById("hamburgerBtn");
+  const menu = document.getElementById("sideMenu");
+  const ripple = burger.querySelector(".ripple");
+
+  burger.classList.toggle("active");
+  menu.classList.toggle("active");
+
+  gsap.fromTo(ripple,
+    { scale:0, opacity:0.9 },
+    { scale:18, opacity:0, duration:0.55, ease:"power2.out" }
+  );
+}
+
+
+</script>
+
+
+
+
+<!-- =============================
+      COMPANY OVERVIEW SECTION
+============================= -->
+<!-- =============================
+      COMPANY OVERVIEW SECTION
+============================= -->
+<!-- WHO WE ARE SECTION -->
+<section class="company-section" id="company">
+  <div class="company-container">
+    <div class="company-row">
+      <!-- Left: Text Content -->
+      <div class="company-text">
+        <h4 class="section-subtitle">About Our Company</h4>
+        <h2 class="section-title">Innovative Advisory for Sustainable Growth</h2>
+        <p>
+          At <strong>InfravisoryConsultancy Pvt. Limited</strong>, we believe in a <span class="highlight">client-centric approach</span>,
+          focusing on understanding the unique needs and goals of each project. Our team of <span class="highlight">seasoned experts</span>
+          combines industry knowledge with innovative thinking to deliver success.
+        </p>
+        <ul class="points">
+          <li><i class="icon">✔</i> Commitment to Professionalism & Integrity</li>
+          <li><i class="icon">✔</i> Advisory with Risk & Performance Insights</li>
+          <li><i class="icon">✔</i> Client-Focused Investment Support</li>
+          <li><i class="icon">✔</i> Nationwide Technical Expertise</li>
+        </ul>
+      </div>
+
+      <!-- Right: Image with Animated Cards -->
+      <div class="company-visual">
+        <div class="image-container">
+          <img src="https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" alt="Team at work" class="main-image">
+          <div class="info-card card1">📊 Project Risk</div>
+          <div class="info-card card2">📈 Feasibility</div>
+          <div class="info-card card3">🔍 Investment Fit</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<style>
+.company-section {
+  background: transparent;
+  color: #e6f0f8;
+  padding: 100px 20px;
+  font-family: 'Poppins', sans-serif;
+  overflow: hidden;
+}
+.company-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.company-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 60px;
+}
+.company-text {
+  flex: 1 1 500px;
+}
+.section-subtitle {
+  color: #00d4ff;
+  font-size: 0.9rem;
+  letter-spacing: 1px;
+  margin-bottom: 12px;
+}
+.section-title {
+  font-size: 2.5rem;
+  color: #fff;
+  margin-bottom: 20px;
+}
+.company-text p {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: #b5d2e0;
+  margin-bottom: 25px;
+}
+.highlight {
+  color: #00ffc8;
+  font-weight: 600;
+}
+.points {
+  list-style: none;
+  padding: 0;
+}
+.points li {
+  font-size: 1rem;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+}
+.points .icon {
+  background: #00ffc8;
+  color: #0c111f;
+  font-weight: bold;
+  font-size: 0.9rem;
+  border-radius: 50%;
+  width: 22px;
+  height: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}
+
+.company-visual {
+  flex: 1 1 500px;
+  position: relative;
+}
+.image-container {
+  position: relative;
+}
+.main-image {
+  width: 100%;
+  border-radius: 16px;
+  box-shadow: 0 8px 40px rgba(0, 255, 255, 0.2);
+}
+
+/* Floating cards */
+.info-card {
+  position: absolute;
+  background: #ffffff0f;
+  color: #fff;
+  backdrop-filter: blur(8px);
+  border-radius: 12px;
+  padding: 10px 20px;
+  font-size: 0.9rem;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.25);
+  animation: floatY 4s infinite ease-in-out;
+
+
+  /* existing styles... */
+  box-shadow:
+    0 0 10px rgba(0, 255, 255, 0.2),
+    0 0 30px rgba(0, 255, 255, 0.15),
+    0 0 60px rgba(0, 255, 255, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+}
+.card1 { top: 10%; left: 5%; animation-delay: 0s; }
+.card2 { top: 50%; left: 75%; animation-delay: 1s; }
+.card3 { bottom: 10%; right: 10%; animation-delay: 2s; }
+
+@keyframes floatY {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .company-row { flex-direction: column; }
+  .section-title { font-size: 2rem; }
+  .main-image { width: 100%; }
+}
+</style>
+
+
+
+
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.from(".section-title", {
+    scrollTrigger: { trigger: ".section-title", start: "top 85%" },
+    opacity: 0, y: 40, duration: 1
+  });
+  gsap.from(".company-text p", {
+    scrollTrigger: { trigger: ".company-text p", start: "top 90%" },
+    opacity: 0, y: 30, duration: 1.2, delay: 0.2
+  });
+  gsap.from(".points li", {
+    scrollTrigger: { trigger: ".points", start: "top 95%" },
+    opacity: 0,
+    x: -30,
+    duration: 0.8,
+    stagger: 0.2
+  });
+  gsap.from(".main-image", {
+    scrollTrigger: { trigger: ".main-image", start: "top 85%" },
+    opacity: 0, scale: 0.9, duration: 1.2, ease: "power3.out"
+  });
+  gsap.from(".info-card", {
+    scrollTrigger: { trigger: ".main-image", start: "top 85%" },
+    opacity: 0, y: 30, duration: 1, stagger: 0.3
+  });
+</script>
+
+<script>
+document.querySelectorAll(".info-card").forEach(card => {
+  card.addEventListener("mousemove", (e) => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
+    card.style.transform = `rotateX(${-y * 0.1}deg) rotateY(${x * 0.1}deg) scale(1.05)`;
+  });
+  card.addEventListener("mouseleave", () => {
+    card.style.transform = "rotateX(0deg) rotateY(0deg) scale(1)";
+  });
+});
+</script>
+
+
+
+<!-- =============================
+      COMPANY information
+============================= -->
+
+<style>
+
+    .expertise-section {
+      padding: 100px 20px;
+      background: linear-gradient(to bottom, #0a0b1b, #111428);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .expertise-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .expertise-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .expertise-header h2 {
+      font-size: 2.8rem;
+      color: #ffffff;
+    }
+
+    .expertise-header p {
+      font-size: 1.1rem;
+      color: #b0bfdc;
+      max-width: 700px;
+      margin: 20px auto 0;
+    }
+
+    .expertise-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .expertise-box {
+      background: #13162d;
+      padding: 30px;
+      border-radius: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .expertise-box::before {
+      content: '';
+      position: absolute;
+      top: -20%;
+      left: -20%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, rgba(0, 255, 255, 0.1), transparent);
+      transform: rotate(45deg);
+      animation: rotate 20s linear infinite;
+      z-index: 0;
+    }
+
+    .expertise-content {
+      z-index: 1;
+    }
+
+    .expertise-title {
+      font-size: 1.6rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #00eaff;
+    }
+
+    .expertise-desc {
+      color: #cfd8ef;
+      font-size: 1rem;
+      line-height: 1.6;
+    }
+
+    .cta {
+      text-align: center;
+      margin-top: 60px;
+    }
+
+    .cta a {
+      display: inline-block;
+      background: #0051ff;
+      color: #fff;
+      padding: 14px 32px;
+      font-weight: 600;
+      text-decoration: none;
+      border-radius: 40px;
+      transition: all 0.3s ease;
+    }
+
+    .cta a:hover {
+      background: #003dcb;
+      transform: translateY(-3px);
+    }
+
+    @keyframes rotate {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (min-width: 768px) {
+      .expertise-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+  </style>
+
+<section class="expertise-section">
+  <div class="expertise-container">
+    <div class="expertise-header">
+      <h2>Our Expertise</h2>
+      <p>We assess the technical aspects of projects to ensure they meet investment criteria. We evaluate feasibility, performance risks, and compliance with standards, providing critical insights that help lenders and clients make informed financing decisions and manage risks effectively throughout the project lifecycle.</p>
+    </div>
+
+    <div class="expertise-grid">
+      <div class="expertise-box">
+        <div class="expertise-content">
+          <div class="expertise-title">Customized Strategy Development</div>
+          <div class="expertise-desc">Tailor-made strategies to address your unique business challenges and opportunities, ensuring sustainable growth and competitive advantage.</div>
+        </div>
+      </div>
+
+      <div class="expertise-box">
+        <div class="expertise-content">
+          <div class="expertise-title">Operational Efficiency Optimization</div>
+          <div class="expertise-desc">Streamline your processes and improve efficiency with our expert guidance, helping you save time and resources.</div>
+        </div>
+      </div>
+
+      <div class="expertise-box">
+        <div class="expertise-content">
+          <div class="expertise-title">Market Analysis and Insights</div>
+          <div class="expertise-desc">Gain valuable market insights and stay ahead of the competition with our comprehensive analysis and data-driven recommendations.</div>
+        </div>
+      </div>
+
+      <div class="expertise-box">
+        <div class="expertise-content">
+          <div class="expertise-title">Leadership and Team Building</div>
+          <div class="expertise-desc">Enhance your leadership capabilities and foster a high-performing team through our specialized training and development programs.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="cta">
+      <a href="#contact">Schedule a Free Call</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray('.expertise-box').forEach((box, i) => {
+    gsap.from(box, {
+      scrollTrigger: {
+        trigger: box,
+        start: "top 85%",
+        toggleActions: "play none none none"
+      },
+      opacity: 0,
+      y: 60,
+      duration: 0.9,
+      delay: i * 0.15,
+      ease: "power2.out"
+    });
+  });
+</script>
+
+
+
+
+
+
+
+
+
+<section class="what-we-do-modern">
+  <div class="wwd-heading">
+    <h2>Why We're the Right Choice<br><span>for Your Energy Projects</span></h2>
+    <p>We combine deep technical expertise with a strategic lens, helping our clients make smarter, more sustainable investments.</p>
+  </div>
+
+  <div class="wwd-tabs">
+    <span class="tab active">End-to-End Advisory</span>
+    <span class="tab">Risk Evaluation</span>
+    <span class="tab">Compliance & Feasibility</span>
+  </div>
+
+  <div class="wwd-grid">
+    <div class="wwd-card" id="card1">
+      <div class="icon"><img src="https://cdn-icons-png.flaticon.com/512/126/126472.png" alt="target" /></div>
+      <h3>Your Success is Our Mission</h3>
+      <p>We offer tailored support and technical evaluation throughout every phase, ensuring investment viability and performance efficiency.</p>
+    </div>
+
+    <div class="wwd-card" id="card2">
+      <div class="icon"><img src="https://cdn-icons-png.flaticon.com/512/1312/1312430.png" alt="light bulb" /></div>
+      <h3>From Vision to Reality</h3>
+      <p>We turn your ideas into actionable plans with insights that align with both technical standards and lender expectations.</p>
+    </div>
+  </div>
+</section>
+
+
+<style>
+.what-we-do-modern {
+  background: #0f0f1a;
+  color: #fff;
+  padding: 100px 20px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.wwd-heading h2 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #fff;
+}
+
+.wwd-heading h2 span {
+  color: #00ffe7;
+}
+
+.wwd-heading p {
+  color: #aaa;
+  font-size: 1.1rem;
+  max-width: 700px;
+  margin: 0 auto 40px;
+}
+
+.wwd-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.wwd-tabs .tab {
+  padding: 10px 20px;
+  border-bottom: 3px solid transparent;
+  color: #ccc;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.wwd-tabs .tab.active {
+  color: #00ffe7;
+  border-bottom: 3px solid #00ffe7;
+}
+
+.wwd-grid {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.wwd-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.08);
+  backdrop-filter: blur(12px);
+  padding: 40px 30px;
+  width: 300px;
+  border-radius: 20px;
+  text-align: left;
+  transition: transform 0.3s, box-shadow 0.3s;
+  position: relative;
+}
+
+.wwd-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.25);
+}
+
+.wwd-card .icon {
+  width: 50px;
+  margin-bottom: 20px;
+}
+
+.wwd-card .icon img {
+  width: 100%;
+  filter: drop-shadow(0 0 8px rgba(0, 255, 255, 0.4));
+}
+
+.wwd-card h3 {
+  color: #fff;
+  font-size: 1.25rem;
+  margin-bottom: 15px;
+}
+
+.wwd-card p {
+  color: #bbb;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .wwd-grid {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+</style>
+
+
+<!-- GSAP and ScrollTrigger for scroll animations -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.5/ScrollTrigger.min.js"></script>
+
+
+
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.from(".wwd-heading h2", {
+  scrollTrigger: ".wwd-heading h2",
+  opacity: 0,
+  y: -50,
+  duration: 1
+});
+gsap.from(".wwd-heading p", {
+  scrollTrigger: ".wwd-heading p",
+  opacity: 0,
+  y: 20,
+  delay: 0.2,
+  duration: 1
+});
+gsap.from(".wwd-card", {
+  scrollTrigger: ".wwd-grid",
+  opacity: 0,
+  y: 30,
+  duration: 1,
+  stagger: 0.3
+});
+</script>
+
+
+
+<!-- ================================
+     3D Spinning Cards Section
+     Title: WE EVALUATE, CONSULT AND ADVISE
+================================== -->
+<!-- ================================
+     EVALUATION SECTION: Modern Glassmorphic Cards
+     Title: WE EVALUATE, CONSULT AND ADVISE
+================================== -->
+<!-- ===================================
+      EVALUATE, CONSULT & ADVISE SECTION
+=================================== -->
+<section class="evaluate-3d-section" id="evaluate">
+  <h2 class="evaluate-title">WE EVALUATE, CONSULT AND ADVISE</h2>
+  <div class="swiper cubeSwiper">
+    <div class="swiper-wrapper">
+      <div class="swiper-slide glass-3d">
+        <h3>Renewable Distressed Assets</h3>
+        <p>Assessment of distressed renewable assets to identify risks, opportunities, and strategies for recovery and optimization.</p>
+      </div>
+      <div class="swiper-slide glass-3d">
+        <h3>Infrastructure Development Projects</h3>
+        <p>Analyzing greenfield infrastructure development projects for viability, uncovering challenges, and ensuring efficient implementation strategies.</p>
+      </div>
+      <div class="swiper-slide glass-3d">
+        <h3>Land Procurement</h3>
+        <p>Technical analysis of land feasibility to determine suitability for renewable energy project development.</p>
+      </div>
+      <div class="swiper-slide glass-3d">
+        <h3>Renewable Energy Contracts</h3>
+        <p>Evaluation of proposals and contracts for cost efficiency and strategic decision-making.</p>
+      </div>
+    </div>
+    <div class="swiper-pagination"></div>
+  </div>
+</section>
+
+<!-- Swiper CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.css" />
+
+<!-- Swiper + GSAP JS -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<!-- Swiper Init -->
+<script>
+  const swiper = new Swiper(".cubeSwiper", {
+    effect: "cube",
+    grabCursor: true,
+    loop: true,
+    autoplay: {
+      delay: 3000,
+      disableOnInteraction: false,
+    },
+    cubeEffect: {
+      shadow: true,
+      slideShadows: true,
+      shadowOffset: 20,
+      shadowScale: 0.94,
+    },
+    pagination: {
+      el: ".swiper-pagination",
+      clickable: true,
+    },
+  });
+
+  gsap.registerPlugin(ScrollTrigger);
+  gsap.from(".evaluate-title", {
+    scrollTrigger: {
+      trigger: "#evaluate",
+      start: "top 80%"
+    },
+    opacity: 0,
+    y: -50,
+    duration: 1
+  });
+</script>
+
+<!-- Styling -->
+<style>
+.evaluate-3d-section {
+  background: radial-gradient(circle at center, #0a0f24, #000);
+  padding: 100px 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  color: #fff;
+}
+.evaluate-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 60px;
+  background: linear-gradient(to right, #00ffc3, #00cfff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.swiper {
+  width: 100%;
+  max-width: 400px;
+  height: 360px;
+  margin: auto;
+}
+.swiper-slide {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 25px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 255, 255, 0.08);
+}
+.swiper-slide h3 {
+  font-size: 1.2rem;
+  margin-bottom: 14px;
+  color: #00ffc3;
+}
+.swiper-slide p {
+  font-size: 0.95rem;
+  color: #e0e0e0;
+  line-height: 1.6;
+}
+.swiper-pagination-bullet {
+  background: #00cfff;
+  opacity: 0.5;
+}
+.swiper-pagination-bullet-active {
+  background: #00ffc3;
+  opacity: 1;
+}
+@media (max-width: 600px) {
+  .evaluate-title {
+    font-size: 1.8rem;
+  }
+  .swiper {
+    height: 340px;
+  }
+}
+</style>
+
+
+
+
+<!-- ================================
+     Tagline Loop with Contact Info
+================================ -->
+
+
+
+
+<section class="infinite-marquee">
+  <div class="marquee-content">
+    <span>Looking forward to hearing from you soon — </span>
+    <span>Looking forward to hearing from you soon — </span>
+    <span>Looking forward to hearing from you soon — </span>
+    <span>Looking forward to hearing from you soon — </span>
+  </div>
+</section>
+
+<style>
+.infinite-marquee {
+  width: 100%;
+  overflow: hidden;
+  background: #001f2e; /* Dark solid background to avoid blur */
+  border-top: 1px solid #00ffe1;
+  border-bottom: 1px solid #00ffe1;
+  padding: 20px 0;
+  z-index: 5;
+}
+
+.marquee-content {
+  display: flex;
+  white-space: nowrap;
+  animation: scrollLeft 20s linear infinite;
+  font-size: 1.5rem;
+  font-weight: 500;
+  gap: 80px;
+  color: #00eaff; /* Logo-like cyan */
+  font-family: 'Orbitron', sans-serif;
+  text-transform: uppercase;
+  text-shadow: 0 0 10px #114c51, 0 0 20px #0c4247;
+  will-change: transform;
+  letter-spacing: 1.5px;
+}
+
+
+.infinite-marquee:hover .marquee-content {
+  animation-play-state: paused;
+}
+
+@keyframes scrollLeft {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-100%); }
+}
+
+.marquee-content span {
+  animation: pulseGlow 2.5s ease-in-out infinite;
+}
+
+
+
+
+</style>
+
+
+
+
+
+
+
+<footer class="custom-footer" data-aos="fade-up">
+  <div class="footer-container">
+    <!-- Navigation -->
+    <div class="footer-column">
+      <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="about.html">About Us</a></li>
+        <li><a href="awareness.html">Awareness Campaigns</a></li>
+        <li><a href="training.html">Training Campaigns</a></li>
+        <li><a href="consultation.html">Consultation</a></li>
+        <li><a href="contact.html">Contact Us</a></li>
+      </ul>
+    </div>
+
+    <!-- Addresses -->
+    <div class="footer-column">
+      <h4>LDS</h4>
+      <p>Arena Park,<br>Leeds, LS17 9BF</p>
+      <a href="#">📍 MAP ↗</a><br>
+      <a href="tel:7770011558">📞 7770011558</a>
+    </div>
+
+    <div class="footer-column">
+      <h4>LDN</h4>
+      <p>105 Piccadilly,<br>London W1J 7NJ</p>
+      <a href="#">📍 MAP ↗</a><br>
+      <a href="tel:7719818283">📞 7719818283</a>
+    </div>
+
+    <!-- Contact + Social -->
+    <div class="footer-column">
+      <h4>Social</h4>
+      <div class="social-links">
+        <a href="#">IG</a>
+        <a href="#">LI</a>
+        <a href="#">YT</a>
+      </div>
+      <div class="emails">
+        <a href="mailto:connect@solarbni.com">✉️ connect@solarbni.com</a><br>
+        <a href="mailto:infosolarbni@gmail.com">📨 infosolarbni@gmail.com</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    © InfravisoryConsultancy 2025 — All Rights Reserved.
+  </div>
+</footer>
+
+<style>
+.custom-footer {
+  background: linear-gradient(180deg, #050d17 0%, #000d13 100%);
+  color: #cfeeff;
+  padding: 60px 30px 40px;
+  font-family: 'Poppins', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.footer-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  gap: 30px;
+}
+
+.footer-column {
+  flex: 1 1 220px;
+  min-width: 200px;
+}
+
+.footer-column h4 {
+  color: #00ffc8;
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 1.2rem;
+}
+
+.footer-column p {
+  margin: 6px 0;
+  font-size: 0.95rem;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 10px;
+}
+
+.footer-column a {
+  color: #cfeeff;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-block;
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.footer-column a:hover {
+  color: #00ffc8;
+  transform: translateX(5px);
+}
+
+.social-links {
+  display: flex;
+  gap: 10px;
+  margin: 12px 0;
+}
+
+.social-links a {
+  padding: 8px 14px;
+  border: 1px solid #00ffc8;
+  border-radius: 20px;
+  color: #00ffc8;
+  text-decoration: none;
+  font-size: 0.9rem;
+  transition: all 0.3s ease;
+}
+
+.social-links a:hover {
+  background: #00ffc8;
+  color: #000d13;
+  transform: scale(1.05);
+}
+
+.emails a {
+  display: block;
+  margin: 5px 0;
+  font-weight: 600;
+  color: #ffffff;
+  text-decoration: underline;
+}
+
+.footer-bottom {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 13px;
+  color: #6c8fa4;
+}
+</style>
+
+
+
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Consultation | Infravisory Consultancy</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
+}
+
+body{
+  background:#020b14;
+  color:#fff;
+  overflow-x:hidden;
+}
+
+/* ---- PARTICLE BG ---- */
+#particles{
+  position:fixed;
+  inset:0;
+  z-index:-2;
+  background:radial-gradient(circle at center, #061729, #01070d);
+}
+
+/* ---- PARALLAX LAYERS ---- */
+.parallax{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  z-index:-1;
+}
+
+/* ---- HEADER ---- */
+.header{
+  width:100%;
+  padding:15px 50px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  position:fixed;
+  top:0;
+  z-index:50;
+  background:rgba(0,0,0,0.4);
+  backdrop-filter:blur(10px);
+}
+
+.header img{
+  height:80px;
+}
+
+.header a{
+  color:white;
+  font-size:18px;
+  font-weight:600;
+  text-decoration:none;
+}
+
+/* ---- HERO ---- */
+.hero{
+  text-align:center;
+  padding-top:180px;
+  padding-bottom:120px;
+}
+
+.hero h1{
+  font-size:4rem;
+  font-weight:800;
+  background:linear-gradient(45deg,#00f6ff,#00c2ff,#0aff95);
+  -webkit-background-clip:text;
+  color:transparent;
+  margin-bottom:20px;
+}
+
+.hero p{
+  opacity:0.85;
+  font-size:1.2rem;
+}
+
+/* ---- SECTION ---- */
+.section{
+  padding:80px 60px;
+}
+
+.section-title{
+  text-align:center;
+  font-size:2.8rem;
+  font-weight:700;
+  margin-bottom:50px;
+  color:#00eaff;
+}
+
+/* ---- GLASS CARDS ---- */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(330px,1fr));
+  gap:40px;
+}
+
+.card{
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.15);
+  border-radius:22px;
+  padding:35px;
+  backdrop-filter:blur(18px);
+  transition:all .35s ease;
+  cursor:pointer;
+  transform-style:preserve-3d;
+}
+
+.card:hover{
+  transform:translateY(-10px) scale(1.04);
+  box-shadow:0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card h2{
+  font-size:1.9rem;
+  margin-bottom:15px;
+  color:#00f6ff;
+}
+
+.card p{
+  opacity:0.85;
+  line-height:1.55;
+}
+
+/* ---- RESPONSIVE ---- */
+@media(max-width:600px){
+  .hero h1{ font-size:2.6rem; }
+  .section{ padding:60px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BG + PARALLAX -->
+<div id="particles"></div>
+<div class="parallax" id="layer1"></div>
+<div class="parallax" id="layer2"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <a href="index.html"><img src="img/logo2.png" alt="Logo"></a>
+  <a href="index.html">← Home</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <h1>Consultation</h1>
+  <p>Expert advisory for energy projects, distressed assets and renewable revival.</p>
+</section>
+
+<!-- CONSULTATION CARDS -->
+<section class="section">
+  <h2 class="section-title">Our Consultation Expertise</h2>
+
+  <div class="grid">
+
+    <div class="card">
+      <h2>Renewable Distressed Assets</h2>
+      <p>
+        Comprehensive evaluation and turnaround strategies for underperforming renewable plants, ensuring optimized output and long-term sustainability.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Infrastructure Development Projects</h2>
+      <p>
+        Advisory for solar parks, EV infra, green energy corridors, and modern power distribution networks.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Renewable Energy Contracts</h2>
+      <p>
+        Power Purchase Agreements, EPC contracts, open-access compliance, regulatory drafting, and due-diligence support.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2>Revival of Renewable Assets</h2>
+      <p>
+        Restoring operational efficiency and extending lifecycle of solar and hybrid generation assets using technological + strategic interventions.
+      </p>
+    </div>
+
+  </div>
+</section>
+
+<script>
+// ---------- PARALLAX ----------
+document.addEventListener("mousemove",(e)=>{
+  const x = (e.clientX - window.innerWidth/2) / 80;
+  const y = (e.clientY - window.innerHeight/2) / 80;
+
+  gsap.to("#layer1",{ x:x*20, y:y*20, duration:1 });
+  gsap.to("#layer2",{ x:-x*20, y:-y*20, duration:1 });
+});
+
+// ---------- PARTICLES ----------
+const particles = document.getElementById("particles");
+for(let i=0;i<80;i++){
+  const p=document.createElement("div");
+  p.style.position="absolute";
+  p.style.width="4px";
+  p.style.height="4px";
+  p.style.borderRadius="50%";
+  p.style.background="rgba(0,255,255,0.45)";
+  p.style.top=Math.random()*100+"vh";
+  p.style.left=Math.random()*100+"vw";
+  particles.appendChild(p);
+
+  gsap.to(p,{
+    y:-50 - Math.random()*100,
+    x:"+="+(Math.random()*50 - 25),
+    duration:4 + Math.random()*4,
+    repeat:-1,
+    ease:"none"
+  });
+}
+
+// ---------- CARD ANIMATION ----------
+gsap.utils.toArray(".card").forEach((card,i)=>{
+  gsap.from(card,{
+    opacity:0,
+    scale:0.7,
+    y:50,
+    duration:1,
+    delay:i*0.15,
+    scrollTrigger:{
+      trigger:card,
+      start:"top 85%"
+    }
+  });
+});
+
+gsap.from(".hero h1",{opacity:0, y:-40, duration:1.2});
+gsap.from(".hero p",{opacity:0, y:20, duration:1.2, delay:0.3});
+</script>
+
+</body>
+</html>

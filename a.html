@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - InfravisoryConsultancy</title>
+    <style>
+        /* === 1. Base Setup & Fonts === */
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+
+        :root {
+            --primary-blue: #007bff; /* Standard Blue */
+            --secondary-blue: #0056b3; /* Darker Blue */
+            --light-blue: #e9f5ff; /* Very Light Blue for background */
+            --text-dark: #333;
+            --text-light: #fff;
+            --gradient-blue: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); /* Deep Professional Blue Gradient */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background-color: var(--light-blue);
+            color: var(--text-dark);
+            overflow-x: hidden; /* Prevent horizontal scroll from animations */
+        }
+
+        /* === 2. Header & Hero Section === */
+        header {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            padding: 1.5rem 0;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-light);
+        }
+            <div class="hero-wrapper">
+  <section class="hero">
+    .hero {
+            padding: 80px 0;
+            text-align: center;
+            background: url('https://images.unsplash.com/photo-1542831371-29b0f74f9713?fit=crop&w=1200&q=80') no-repeat center center/cover;
+            color: var(--text-light);
+            position: relative;
+        }
+    <!-- existing hero content stays here -->
+  </section>
+</div>
+
+        .hero-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: -1;
+  overflow: hidden;
+}
+
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5); /* Dark overlay for text readability */
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(20px);
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+            font-weight: 300;
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(20px);
+        }
+
+        /* === 3. Main Content Sections === */
+        .section {
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: var(--secondary-blue);
+            font-weight: 600;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 50%;
+            height: 4px;
+            background-color: var(--primary-blue);
+            margin: 8px auto 0;
+            border-radius: 2px;
+        }
+
+        .feature-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+            margin-top: 50px;
+            flex-wrap: wrap; /* Allows wrapping on smaller screens */
+        }
+
+        .feature-card {
+            background-color: var(--text-light);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            text-align: left;
+            flex: 1 1 300px; /* Flex basis for responsiveness */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-top: 5px solid var(--primary-blue);
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(50px);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .feature-card h3 {
+            color: var(--primary-blue);
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+
+        .feature-card i {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+
+        /* === 4. Commitment Section (Blue background) === */
+        .commitment-section {
+            background: var(--gradient-blue);
+            color: var(--text-light);
+            padding: 80px 0;
+        }
+
+        .commitment-section .section-title {
+            color: var(--text-light);
+        }
+
+        .commitment-section .section-title::after {
+            background-color: var(--text-light);
+        }
+
+        .commitment-text {
+            font-size: 1.25rem;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+            font-weight: 300;
+        }
+
+        /* === 5. Footer === */
+        footer {
+            background-color: var(--secondary-blue);
+            color: var(--text-light);
+            text-align: center;
+            padding: 20px 0;
+            font-size: 0.9rem;
+        }
+
+        /* === 6. ANIMATION CLASSES (JS will add these) === */
+        .animate-fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container">
+            <div class="logo">InfravisoryConsultancy</div>
+        </div>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <h1 id="hero-title">Delivering Insightful Advisory Services</h1>
+            <p id="hero-subtitle">Combining industry knowledge with innovative thinking to drive success for every client.</p>
+        </div>
+    </section>
+
+    <section class="section">
+        <div class="container">
+            <h2 class="section-title">Our Client-Centric Approach</h2>
+            <div class="feature-grid">
+
+                <div class="feature-card" data-delay="0.2">
+                    <h3><i class="fas fa-handshake"></i>Client-Centric Focus</h3>
+                    <p>We believe in a **client-centric approach**, focusing on understanding the **unique needs and goals** of each project. Your vision is our blueprint.</p>
+                </div>
+
+                <div class="feature-card" data-delay="0.4">
+                    <h3><i class="fas fa-brain"></i>Seasoned Expertise</h3>
+                    <p>Our team of **seasoned experts** combines deep **industry knowledge** with innovative thinking to deliver superior, successful solutions.</p>
+                </div>
+
+                <div class="feature-card" data-delay="0.6">
+                    <h3><i class="fas fa-lightbulb"></i>Innovative Solutions</h3>
+                    <p>We deliver solutions that **drive success**. Our innovative thinking ensures you receive forward-looking and efficient advisory services.</p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="commitment-section">
+        <div class="container">
+            <h2 class="section-title">Our Commitment</h2>
+            <p class="commitment-text animate-on-scroll">
+                We are committed to maintaining the **highest standards of professionalism and integrity**, ensuring that our clients receive the most **reliable and insightful advisory services** available in the industry.
+            </p>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            &copy; 2025 InfravisoryConsultancy Pvt. Limited. All Rights Reserved.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Initial Hero Text Animation (Runs once on load)
+            const heroTitle = document.getElementById('hero-title');
+            const heroSubtitle = document.getElementById('hero-subtitle');
+
+            setTimeout(() => {
+                heroTitle.classList.add('animate-fade-in');
+            }, 200);
+
+            setTimeout(() => {
+                heroSubtitle.classList.add('animate-fade-in');
+            }, 600);
+
+            // 2. On-Scroll Fade-In Animations for Cards and Text
+            const cards = document.querySelectorAll('.feature-card');
+            const commitmentText = document.querySelector('.commitment-text');
+            
+            // Collect all elements to animate
+            const elementsToAnimate = [commitmentText, ...cards];
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const element = entry.target;
+                        // Use the data-delay attribute for a staggered effect
+                        const delay = element.dataset.delay || 0; 
+                        
+                        setTimeout(() => {
+                            element.classList.add('animate-fade-in');
+                        }, parseFloat(delay) * 1000); 
+
+                        // Stop observing once the animation has been triggered
+                        observer.unobserve(element);
+                    }
+                });
+            }, {
+                // Trigger animation when 20% of the element is visible
+                threshold: 0.2
+            });
+
+            elementsToAnimate.forEach(element => {
+                if (element) {
+                    observer.observe(element);
+                }
+            });
+        });
+    </script>
+
+
+
+<script>
+  // Fade in content after scrolling past hero
+  window.addEventListener("scroll", () => {
+    const content = document.querySelector('.content');
+    if (window.scrollY > 50) {
+      content.style.opacity = '1';
+    }
+  });
+</script>
+
+
+
+
+</body>
+</html>

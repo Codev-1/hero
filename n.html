@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Preview</title>
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body,html{width:100%;height:100%;overflow:hidden;font-family:Arial;}
+
+.loader-wrapper{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  background:#fff;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;z-index:9999;
+  animation:fadeOut .8s ease forwards;animation-delay:3.2s;
+}
+.loader-logo{width:180px;opacity:0;animation:logoFade 1.4s ease-in-out forwards;}
+.loader-bars{display:flex;margin-top:18px;gap:8px;}
+.bar{width:8px;height:32px;background:#008CDB;border-radius:4px;animation:bounce 1s infinite ease-in-out;}
+.bar:nth-child(2){animation-delay:.2s;}
+.bar:nth-child(3){animation-delay:.4s;}
+
+.loader-text{margin-top:20px;font-size:18px;color:#008CDB;}
+#typeText{border-right:3px solid #008CDB;padding-right:5px;white-space:nowrap;overflow:hidden;animation:cursorBlink .7s infinite;}
+@keyframes cursorBlink{0%{border-color:transparent;}50%{border-color:#008CDB;}100%{border-color:transparent;}}
+
+@keyframes bounce{0%,40%,100%{transform:scaleY(.4);}20%{transform:scaleY(1);}}
+@keyframes logoFade{0%{opacity:0;transform:translateY(20px);}100%{opacity:1;transform:translateY(0);}}
+@keyframes fadeOut{0%{opacity:1;}100%{opacity:0;visibility:hidden;}}
+
+.hero{position:relative;height:100vh;width:100%;overflow:hidden;opacity:0;transform:translateY(20px);transition:1s;background:#ffffff;display:flex;align-items:center;justify-content:center;}
+body.loaded .hero{opacity:1;transform:translateY(0);}
+
+.energy-wave{position:absolute;top:50%;left:50%;width:900px;height:900px;transform:translate(-50%,-50%);background:radial-gradient(rgba(0,140,219,.25),transparent 70%);border-radius:50%;filter:blur(60px);animation:wavePulse 5s infinite ease-in-out;z-index:1;}
+@keyframes wavePulse{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.55;}50%{transform:translate(-50%,-50%) scale(1.25);opacity:.75;}}
+
+.hero-logo-fixed{position:absolute;top:25px;left:35px;width:200px;z-index:10;}
+
+.hamburger{position:absolute;top:30px;right:35px;width:35px;height:28px;cursor:pointer;z-index:10;}
+.hamburger span{display:block;height:4px;background:#008CDB;margin:6px 0;border-radius:4px;transition:.4s;}
+.hamburger.active span:nth-child(1){transform:translateY(10px) rotate(45deg);} 
+.hamburger.active span:nth-child(2){opacity:0;} 
+.hamburger.active span:nth-child(3){transform:translateY(-10px) rotate(-45deg);} 
+
+.side-menu{position:fixed;top:0;right:-320px;width:320px;height:100vh;background:rgba(0, 1, 2, 0.15);backdrop-filter:blur(18px);padding:100px 40px;border-left:2px solid rgba(255,255,255,0.3);transition:.5s;z-index:9;}
+.side-menu.active{right:0;}
+.side-menu a{display:block;font-size:22px;font-weight:bold;margin:20px 0;color:#008CDB;text-decoration:none;}
+
+.hero-content{text-align:center;z-index:5;}
+.hero-content h1{font-size:48px;color:#008CDB;margin-bottom:20px;}
+.hero-content p{font-size:20px;color:#006BB2;max-width:600px;margin:auto;}
+
+</style>
+<style>
+/* --- ABOUT SECTION STYLING UPDATE --- */
+#aboutSection {
+  opacity: 0;
+  transform: scale(0.8);
+  transition: none;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  background: rgba(255,255,255,0.2);
+  border-radius: 25px;
+  border: 1px solid rgba(255,255,255,0.35);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.12);
+  padding: 50px 35px;
+  max-width: 800px;
+  width: 90%;
+}
+#aboutSection h2 {
+  color: #008CDB;
+  font-size: 32px;
+  font-weight: 800;
+  text-align: center;
+  margin-bottom: 15px;
+}
+#aboutSection p {
+  color: #005A8C;
+  font-size: 18px;
+  line-height: 1.6;
+  text-align: center;
+  margin-bottom: 25px;
+}
+#aboutCloseBtn {
+  background: #008CDB;
+  color: white;
+  padding: 10px 25px;
+  border-radius: 12px;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+#aboutCloseBtn:hover {
+  background: #006bad;
+}
+@media(max-width:600px){
+  #aboutSection{padding:30px 20px;}
+  #aboutSection h2{font-size:26px;}
+  #aboutSection p{font-size:16px;}
+}
+</style>
+</head>
+<body>
+
+<div class="loader-wrapper">
+  <img src="https://via.placeholder.com/180x60?text=Logo" class="loader-logo">
+  <div class="loader-bars"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+  <div class="loader-text"><span id="typeText"></span></div>
+</div>
+
+<section class="hero">
+  <div class="energy-wave"></div>
+  <img src="https://via.placeholder.com/200x60?text=Logo" class="hero-logo-fixed">
+
+  <div class="hamburger" id="hamburgerBtn" onclick="toggleMenuUpdated()"><span></span><span></span><span></span></div>
+
+  <div class="side-menu" id="sideMenu">
+    <a href="#">Home</a>
+    <a href="#">About Us</a>
+    <a href="#">Awareness Campaigns</a>
+    <a href="#">Training Campaigns</a>
+    <a href="#">Consultation</a>
+    <a href="#">Contact Us</a>
+  </div>
+
+  <div class="hero-content"><h1>Powering a Sustainable Tomorrow</h1><p>We provide innovative renewable energy solutions.</p></div>
+</section>
+
+<script>
+const typingText="Renewable Energy Sector | Delivering Insightful Advisory Services";
+const t=document.getElementById("typeText");let i=0;
+function typeWriter(){if(i<typingText.length){t.textContent+=typingText.charAt(i);i++;setTimeout(typeWriter,55);}};
+setTimeout(typeWriter,800);
+
+window.addEventListener("load",()=>{setTimeout(()=>{document.body.classList.add("loaded");},3000);});
+const b=document.getElementById("hamburgerBtn");const m=document.getElementById("sideMenu");
+function toggleMenuUpdated(){b.classList.toggle("active");m.classList.toggle("active");}
+</script>
+
+
+
+<!-- About Us Modal Section -->
+<div id="aboutSection" class="about-modal hidden">
+  <div class="about-content">
+    <h2 class="about-title">OUR COMPANY</h2>
+    <p class="about-text">
+      At Infravisory Consultancy Pvt. Limited, we believe in a client-centric approach, focusing on understanding the unique needs and goals of each project. Our team of seasoned experts combines industry knowledge with innovative thinking to deliver solutions that drive success. We are committed to maintaining the highest standards of professionalism and integrity, ensuring that our clients receive the most reliable and insightful advisory services.
+    </p>
+    <button id="closeAbout" class="close-about-btn">Close</button>
+  </div>
+</div>
+
+<style>
+.about-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  transition: opacity 0.4s ease;
+}
+.about-modal.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+.about-content {
+  background: linear-gradient(145deg, #e8f3ff, #ffffff);
+  border-radius: 20px;
+  padding: 40px;
+  max-width: 700px;
+  text-align: center;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+  border-top: 6px solid #0098db;
+}
+.about-title {
+  font-size: 32px;
+  font-weight: 800;
+  color: #005a8d;
+  margin-bottom: 20px;
+}
+.about-text {
+  font-size: 18px;
+  line-height: 1.7;
+  color: #003d5c;
+  font-weight: 500;
+}
+.close-about-btn {
+  margin-top: 25px;
+  background: #0098db;
+  color: #fff;
+  padding: 12px 24px;
+  border-radius: 10px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+.close-about-btn:hover {
+  background: #006fa1;
+}
+</style>
+
+<script>
+// OPEN ABOUT FROM MENU
+const aboutBtn = document.querySelector('[data-menu="about"]');
+const aboutModal = document.getElementById('aboutSection');
+const closeAbout = document.getElementById('closeAbout');
+
+if (aboutBtn) {
+  aboutBtn.addEventListener('click', () => {
+    aboutModal.classList.remove('hidden');
+  });
+}
+
+closeAbout.addEventListener('click', () => {
+  aboutModal.classList.add('hidden');
+});
+</script>
+
+<!-- ABOUT US MODAL -->
+<div id="aboutModal" class="about-modal">
+  <div class="about-content">
+    <span class="close-about" onclick="closeAbout()">&times;</span>
+    <h2>OUR COMPANY</h2>
+    <p>At Infravisory Consultancy Pvt. Limited, we believe in a client-centric approach, focusing on understanding the unique needs and goals of each project. Our team of seasoned experts combines industry knowledge with innovative thinking to deliver solutions that drive success. We are committed to maintaining the highest standards of professionalism and integrity, ensuring that our clients receive the most reliable and insightful advisory services.</p>
+  </div>
+</div>
+
+<script>
+function openAbout(){ document.getElementById('aboutModal').classList.add('show'); }
+function closeAbout(){ document.getElementById('aboutModal').classList.remove('show'); }
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script>
+function openAbout(){
+  const box = document.getElementById('aboutSection');
+  box.style.display = 'block';
+  gsap.fromTo(box,
+    {opacity:0, scale:0.8},
+    {opacity:1, scale:1, duration:0.6, ease:'power3.out'}
+  );
+}
+function closeAbout(){
+  const box = document.getElementById('aboutSection');
+  gsap.to(box, {
+    opacity:0,
+    scale:0.8,
+    duration:0.5,
+    ease:'power3.in',
+    onComplete:()=> box.style.display='none'
+  });
+}
+</script>
+</body>
+</html>

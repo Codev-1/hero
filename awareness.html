@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Awareness Campaigns — InfravisoryConsultancy</title>
+
+<!-- Fonts & GSAP -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+<style>
+  :root{
+    --brand-1: #008CDB;
+    --brand-2: #006BB2;
+    --muted: #edf8ff;
+    --glass-bg: rgba(255,255,255,0.55);
+    --glass-border: rgba(255,255,255,0.25);
+    --accent: linear-gradient(135deg,#00E5C3,#00A7FF 60%);
+    --card-radius: 20px;
+  }
+
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0;font-family:"Poppins",system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background: linear-gradient(180deg,#f3fbff,#ffffff 40%);color:#04283a;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+
+  /* ---------- Floating Parallax Background Layers ---------- */
+  .bg-wrap{position:fixed;inset:0;z-index:-10;overflow:hidden;pointer-events:none}
+  .bg-layer{
+    position:absolute;will-change:transform;filter:blur(36px);opacity:.85;
+  }
+  .bg-layer.a{width:900px;height:900px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(0,140,219,0.18), transparent 45%);left:-10%;top:-8%;}
+  .bg-layer.b{width:700px;height:700px;border-radius:28px;background:linear-gradient(135deg, rgba(0,230,195,0.12), rgba(0,140,219,0.08));right:-10%;bottom:-5%;}
+  .bg-layer.c{width:1200px;height:500px;border-radius:24px;background:linear-gradient(90deg, rgba(0,140,219,0.06), rgba(0,200,255,0.06));left:5%;bottom:-20%}
+
+  /* subtle particles canvas */
+  #particles{position:fixed;inset:0;z-index:-5;pointer-events:none}
+
+  /* ---------- Header ---------- */
+  .header{display:flex;align-items:center;justify-content:space-between;padding:26px 48px;position:relative;z-index:50}
+  .logo{height:64px}
+  .nav-actions{display:flex;gap:12px;align-items:center}
+  .btn-back{background:var(--brand-1);color:#fff;padding:10px 18px;border-radius:999px;text-decoration:none;font-weight:700;box-shadow:0 12px 30px rgba(0,140,219,0.14)}
+  .btn-back:focus{outline:3px solid rgba(0,140,219,0.18)}
+
+  /* ---------- Title ---------- */
+  .hero-title{max-width:1150px;margin:12px auto 28px;padding:0 24px;text-align:center;z-index:40}
+  .hero-title h1{font-size:44px;color:var(--brand-2);margin:0 0 10px;letter-spacing:-0.5px}
+  .hero-title p{margin:0;color:#034b66;font-size:18px}
+
+  /* ---------- Container / grid ---------- */
+  .container{width:94%;max-width:1260px;margin:40px auto 100px;display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:28px;z-index:30;position:relative}
+
+  /* ---------- Ultra card (glass + gradient border + icon) ---------- */
+  .campaign-card{
+    position:relative;
+    padding:22px;border-radius:var(--card-radius);
+    background: linear-gradient(180deg, rgba(255,255,255,0.68), rgba(245,252,255,0.6));
+    border:1px solid var(--glass-border);
+    box-shadow: 0 12px 40px rgba(4,40,60,0.08);
+    overflow:visible;
+    transform-style:preserve-3d;
+    transition:transform .28s cubic-bezier(.2,.9,.2,1), box-shadow .28s;
+    perspective:1200px;
+  }
+
+  .card-frame{
+    position:absolute;inset:-2px;background:linear-gradient(90deg, rgba(0,140,219,0.08), rgba(0,230,195,0.06));
+    border-radius:calc(var(--card-radius) + 2px);z-index:-1;filter:blur(14px);opacity:0.9;mix-blend-mode:screen;
+  }
+
+  .campaign-top{display:flex;align-items:center;gap:16px}
+  .icon-wrap{width:64px;height:64px;border-radius:14px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg, rgba(0,140,219,0.12), rgba(0,230,195,0.07));backdrop-filter: blur(6px);border:1px solid rgba(255,255,255,0.3)}
+  .icon-svg{width:36px;height:36px;fill:var(--brand-1)}
+  .card-title{font-size:20px;color:var(--brand-2);font-weight:700}
+  .card-sub{margin-top:8px;color:#04506d;font-weight:600}
+
+  .card-section{margin-top:16px}
+  .card-section h4{margin:12px 0 8px;color:#01607f;font-size:16px}
+  .card-section p{margin:0;color:#063a4a;line-height:1.55;font-size:15px}
+
+  .card-actions{display:flex;gap:12px;margin-top:18px;align-items:center}
+  .btn-primary{background:var(--brand-1);color:#fff;padding:10px 14px;border-radius:12px;border:none;cursor:pointer;font-weight:700;box-shadow:0 10px 30px rgba(0,140,219,0.14)}
+  .btn-ghost{background:transparent;border:1px solid rgba(0,140,219,0.12);padding:8px 12px;border-radius:10px;color:var(--brand-2);font-weight:700;cursor:pointer}
+
+  /* holographic sheen */
+  .sheen{
+    pointer-events:none;position:absolute;left:-40%;top:-60%;width:200%;height:200%;background:linear-gradient(120deg, rgba(255,255,255,0.06), rgba(255,255,255,0.18) 40%, rgba(255,255,255,0.06));transform:rotate(20deg);opacity:.0;transition:opacity .25s}
+  .campaign-card:hover .sheen{opacity:1}
+
+  /* card number badge */
+  .card-badge{position:absolute;right:18px;top:18px;background:rgba(0,140,219,0.06);padding:8px 12px;border-radius:12px;color:var(--brand-2);font-weight:700;font-size:13px;border:1px solid rgba(0,140,219,0.06)}
+
+  /* small screens */
+  @media(max-width:900px){
+    .hero-title h1{font-size:34px}
+    .campaign-card{padding:18px}
+  }
+  @media(max-width:520px){
+    .header{padding:14px}
+    .logo{height:52px}
+    .hero-title p{font-size:15px}
+  }
+</style>
+</head>
+<body>
+
+<!-- Parallax background layers -->
+<div class="bg-wrap" aria-hidden="true">
+  <div class="bg-layer a"></div>
+  <div class="bg-layer b"></div>
+  <div class="bg-layer c"></div>
+</div>
+
+<!-- particles canvas -->
+<canvas id="particles"></canvas>
+
+<header class="header">
+  <img src="img/logo2.png" alt="Logo" class="logo" />
+  <div class="nav-actions">
+    <a href="index.html" class="btn-back" aria-label="Back to home">← Home</a>
+  </div>
+</header>
+
+<section class="hero-title" role="banner">
+  <h1>Awareness Campaigns — Renewable Energy Programs</h1>
+  <p class="subhead">Explore flagship schemes & eligibility — PM Surya Ghar, KUSUM, SMART, Green Open Access, Virtual & Group Net Metering.</p>
+</section>
+
+<main class="container" role="main" aria-live="polite">
+
+  <!-- Card 1 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">1</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- sun icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M6.76 4.84l-1.8-1.79L3.17 4.84 4.97 6.63 6.76 4.84zM1 11h3v2H1v-2zm10-9h2v3h-2V2zm9.03 2.05l-1.79 1.79 1.8 1.79 1.79-1.79-1.79-1.79zM17.24 4.84l1.79 1.79 1.8-1.79-1.79-1.79-1.8 1.79zM11 20h2v3h-2v-3zM6.76 19.16l-1.79 1.79 1.79 1.79 1.8-1.79-1.8-1.79zM20.84 14l1.79 1.79 1.79-1.79-1.79-1.79-1.79 1.79zM12 6a6 6 0 100 12 6 6 0 000-12z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">PM Surya Ghar Muft Bijli Yojana</div>
+        <div class="card-sub">Rooftop Solar for households</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Provision of rooftop solar systems to households to provide free electricity and reduce dependency on the grid.</p>
+
+      <h4>Benefits</h4>
+      <p>Free monthly electricity units, lower bills, long-term savings and clean energy adoption.</p>
+
+      <h4>Eligibility</h4>
+      <p>Residential households with suitable rooftops and valid electricity connections.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="1">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(1)">Share</button>
+    </div>
+  </article>
+
+  <!-- Card 2 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">2</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- leaf icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2C8 2 2 6.5 2 6.5S8 11 11.5 13.5 22 22 22 22 22 10 12 2z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">KUSUM Scheme</div>
+        <div class="card-sub">Solar support for agriculture</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Promotes solar pumps and grid-connected renewable systems to empower farmers and reduce diesel use.</p>
+
+      <h4>Benefits</h4>
+      <p>Subsidized solar pumps, irrigation savings, and potential income from surplus energy.</p>
+
+      <h4>Eligibility</h4>
+      <p>Registered farmers, cooperatives, panchayats with agricultural land.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="2">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(2)">Share</button>
+    </div>
+  </article>
+
+  <!-- Card 3 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">3</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- network icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2l3 6 7 1-5 5 1 7-6-3-6 3 1-7-5-5 7-1z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">SMART Program</div>
+        <div class="card-sub">Smart renewable integration</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Supports modern renewable integrations—smart metering, energy management, and urban energy projects.</p>
+
+      <h4>Benefits</h4>
+      <p>Higher efficiency, better monitoring, and incentives for smart deployments.</p>
+
+      <h4>Eligibility</h4>
+      <p>Urban local bodies, smart city projects, implemented plans.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="3">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(3)">Share</button>
+    </div>
+  </article>
+
+  <!-- Card 4 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">4</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- factory/industry icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 13h2v8h14v-8h2v10H3V13zm6-9h2v7H9V4zM3 9h2v2H3V9zM14 2h2v9h-2V2z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">Green Open Access</div>
+        <div class="card-sub">Direct purchase of renewable power</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Allows consumers—especially commercial/industrial—to buy renewable energy directly from generators.</p>
+
+      <h4>Benefits</h4>
+      <p>Lower costs, supplier freedom, and greenhouse gas reductions.</p>
+
+      <h4>Eligibility</h4>
+      <p>Entities meeting minimum load criteria (often ≥100 kW) and fulfilling regulatory requirements.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="4">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(4)">Share</button>
+    </div>
+  </article>
+
+  <!-- Card 5 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">5</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- cloud-solar icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M19 18H6c-2.2 0-4-1.8-4-4 0-2 1.5-3.6 3.4-3.9C6.6 8.7 8.2 8 10 8c2.1 0 4 1.3 4.7 3.1C17.4 12 19 13 19 18z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">Virtual Net Metering</div>
+        <div class="card-sub">Off-site solar credits</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Consumers subscribe to off-site solar plants and receive virtual credit allocation against their bills.</p>
+
+      <h4>Benefits</h4>
+      <p>No rooftop required, scalable, and allows access to solar benefits across locations.</p>
+
+      <h4>Eligibility</h4>
+      <p>Group housing societies, institutions, and commercial consumers without rooftop space.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="5">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(5)">Share</button>
+    </div>
+  </article>
+
+  <!-- Card 6 -->
+  <article class="campaign-card" data-tilt data-tilt-max="10">
+    <div class="card-frame"></div>
+    <div class="card-badge">6</div>
+    <div class="sheen"></div>
+
+    <div class="campaign-top">
+      <div class="icon-wrap" aria-hidden="true">
+        <!-- group icon -->
+        <svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M16 11c1.7 0 3-1.3 3-3s-1.3-3-3-3-3 1.3-3 3 1.3 3 3 3zM8 11c1.7 0 3-1.3 3-3S9.7 5 8 5 5 6.3 5 8s1.3 3 3 3zm8 2c-2.3 0-7 1.2-7 3.5V20h14v-3.5C23 14.2 18.3 13 16 13zM8 13c-2.7 0-8 1.3-8 4v3h9v-3.5C9 14.2 10.7 13 12 13z"/></svg>
+      </div>
+      <div>
+        <div class="card-title">Group Net Metering</div>
+        <div class="card-sub">Shared generation for multiple meters</div>
+      </div>
+    </div>
+
+    <div class="card-section">
+      <h4>Basic policy introduction</h4>
+      <p>Enables multiple consumers within the same premises to share energy from a common solar installation.</p>
+
+      <h4>Benefits</h4>
+      <p>Shared cost model, efficient distribution, and reduced collective bills.</p>
+
+      <h4>Eligibility</h4>
+      <p>RWAs, apartment complexes, institutions with multiple meters.</p>
+    </div>
+
+    <div class="card-actions">
+      <button class="btn-primary" data-action="detail" data-id="6">Learn more</button>
+      <button class="btn-ghost" onclick="shareCard(6)">Share</button>
+    </div>
+  </article>
+
+</main>
+
+<!-- Small detail modal (learn more) -->
+<div id="detailModal" aria-hidden="true" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:120">
+  <div style="width:92%;max-width:820px;background:linear-gradient(180deg,#ffffff, #eaf7ff);padding:26px;border-radius:18px;box-shadow:0 30px 80px rgba(2,40,80,0.18);border:1px solid rgba(0,140,219,0.08);">
+    <button aria-label="close" id="modalClose" style="float:right;background:transparent;border:none;font-size:22px;cursor:pointer">✕</button>
+    <h3 id="modalTitle" style="color:var(--brand-2);margin-top:6px"></h3>
+    <p id="modalBody" style="color:#034b66;line-height:1.6"></p>
+    <div style="text-align:right;margin-top:14px"><button id="modalAction" class="btn-primary">Contact Us</button></div>
+  </div>
+</div>
+
+<script>
+/* -------------------------------------------
+   Helpers: tiny particle system for depth
+   Lightweight: draws small moving dots on canvas
+   ------------------------------------------- */
+(function initParticles(){
+  const canvas = document.getElementById('particles');
+  if(!canvas) return;
+  const ctx = canvas.getContext('2d');
+  let w = canvas.width = innerWidth;
+  let h = canvas.height = innerHeight;
+  const particles = [];
+  const N = Math.round((w*h)/90000); // density
+
+  function rand(min,max){return Math.random()*(max-min)+min}
+  for(let i=0;i<N;i++){
+    particles.push({x:rand(0,w),y:rand(0,h),r:rand(0.6,1.6),vx:rand(-0.2,0.2),vy:rand(-0.15,0.15),alpha:rand(0.06,0.14)});
+  }
+
+  function resize(){w = canvas.width = innerWidth; h = canvas.height = innerHeight;}
+  addEventListener('resize', resize);
+
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of particles){
+      p.x += p.vx; p.y += p.vy;
+      if(p.x< -20) p.x = w+20;
+      if(p.x> w+20) p.x = -20;
+      if(p.y< -20) p.y = h+20;
+      if(p.y> h+20) p.y = -20;
+      ctx.beginPath();
+      ctx.fillStyle = 'rgba(0,140,219,'+p.alpha+')';
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fill();
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+
+/* -------------------------------------------
+   GSAP Entrance animations + ScrollTrigger
+   ------------------------------------------- */
+gsap.registerPlugin(ScrollTrigger);
+
+// page fade-in
+gsap.to(document.body, {opacity:1, duration:0.9, ease:'power2.out'});
+
+// parallax movement for bg-layers on scroll
+gsap.to('.bg-layer.a', {yPercent:-8, xPercent:4, ease:'none', scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:0.6}});
+gsap.to('.bg-layer.b', {yPercent:10, xPercent:-6, ease:'none', scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:0.5}});
+gsap.to('.bg-layer.c', {yPercent:-15, xPercent:8, ease:'none', scrollTrigger:{trigger:document.body, start:'top top', end:'bottom bottom', scrub:0.7}});
+
+// staggered card reveal from bottom with slight scale
+gsap.utils.toArray('.campaign-card').forEach((card, i)=>{
+  gsap.fromTo(card,
+    {y:40, opacity:0, scale:0.97},
+    {
+      y:0, opacity:1, scale:1, duration:0.9, delay: 0.12 + i*0.08, ease:'power3.out',
+      scrollTrigger: {trigger: card, start: 'top 92%'}
+    }
+  );
+});
+
+/* 3D tilt interaction: simple mouse-based tilt */
+const cards = document.querySelectorAll('.campaign-card');
+cards.forEach(card=>{
+  const max = parseFloat(card.dataset.tiltMax) || 10;
+  card.addEventListener('mousemove', (e)=>{
+    const rect = card.getBoundingClientRect();
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    const rotY = (px - 0.5) * (max*2); // -max..+max
+    const rotX = (0.5 - py) * (max*2);
+    card.style.transform = `perspective(1200px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(4px)`;
+    card.style.boxShadow = `0 ${16 - Math.abs(rotX)}px ${30 - Math.abs(rotY)}px rgba(2,40,80,0.12)`;
+  });
+  card.addEventListener('mouseleave', ()=>{
+    card.style.transform = '';
+    card.style.boxShadow = '';
+  });
+});
+
+/* Modal (Learn more) */
+const modal = document.getElementById('detailModal');
+const modalTitle = document.getElementById('modalTitle');
+const modalBody = document.getElementById('modalBody');
+const modalClose = document.getElementById('modalClose');
+const modalAction = document.getElementById('modalAction');
+
+document.querySelectorAll('[data-action="detail"]').forEach(btn=>{
+  btn.addEventListener('click', (e)=>{
+    const id = btn.dataset.id;
+    openModalFor(id);
+  });
+});
+
+modalClose.addEventListener('click', closeModal);
+modal.addEventListener('click', (e)=>{ if(e.target===modal) closeModal(); });
+
+function openModalFor(id){
+  const mapping = {
+    '1': {
+      title:'PM Surya Ghar Muft Bijli Yojana',
+      body:'A flagship rooftop solar program providing households with rooftop solar installations to produce free electricity units and reduce grid-dependency. Eligible households get central subsidies and technical support.'
+    },
+    '2': {
+      title:'KUSUM Scheme',
+      body:'KUSUM supports solarisation for farmers: solar pumps, decentralized generation, and incentives for agricultural solar deployment—reducing diesel usage and improving incomes.'
+    },
+    '3': {
+      title:'SMART Program',
+      body:'SMART focuses on integrating renewable energy with smart city infrastructure—digital metering, energy management, and efficiency upgrades for urban projects.'
+    },
+    '4': {
+      title:'Green Open Access',
+      body:'Green Open Access allows large consumers to procure renewable energy directly from generators—lowering costs and encouraging competitive green procurement.'
+    },
+    '5': {
+      title:'Virtual Net Metering',
+      body:'Virtual net metering lets users subscribe to off-site solar plants and receive credits—ideal for consumers without rooftop access.'
+    },
+    '6': {
+      title:'Group Net Metering',
+      body:'Group net metering shares a single solar installation\'s output across multiple meters on the same premises—suited for societies and institutions.'
+    }
+  };
+  const data = mapping[id];
+  if(!data) return;
+  modalTitle.textContent = data.title;
+  modalBody.textContent = data.body;
+  modal.style.display = 'flex';
+  gsap.fromTo(modal.querySelector('div'), {y:30,opacity:0,scale:0.98},{y:0,opacity:1,scale:1,duration:0.5,ease:'power3.out'});
+}
+
+function closeModal(){
+  gsap.to(modal.querySelector('div'), {y:20,opacity:0,scale:0.98,duration:0.28,ease:'power2.in',onComplete:()=>modal.style.display='none'});
+}
+
+modalAction.addEventListener('click', ()=>{ window.location.href = 'contact.html'; });
+
+/* tiny share function */
+function shareCard(id){
+  const titles = {
+    1:'PM Surya Ghar Muft Bijli Yojana',
+    2:'KUSUM Scheme',
+    3:'SMART Program',
+    4:'Green Open Access',
+    5:'Virtual Net Metering',
+    6:'Group Net Metering'
+  };
+  const url = location.href + '#campaign-' + id;
+  if(navigator.share){
+    navigator.share({title: titles[id], text: 'Check this campaign: '+titles[id], url});
+  } else {
+    navigator.clipboard.writeText(url).then(()=> alert('Link copied to clipboard'));
+  }
+}
+
+/* accessibility: close modal on ESC */
+document.addEventListener('keydown', (e)=>{ if(e.key==='Escape') closeModal(); });
+
+</script>
+</body>
+</html>
